@@ -1,0 +1,28 @@
+@(form: Form[Application.Login])
+@if(form.hasGlobalErrors) {
+    <p class="error">
+        @form.globalError.message
+    </p>
+}
+@main("Prijava") {
+  <header>
+  </header>
+  @helper.form(routes.Application.authenticate) {
+    <div id="section_title"> Prijava
+        <a href="@routes.Application.register"> Registruj se </a>
+    </div>
+    <div class="input_form input_form_style">
+      <div class="field">
+        <label for="email"> Email </label>
+        <input type="email" name="email" placeholder="Email" value="@form("email").value">
+      </div>
+      <div class="field">
+        <label for="password"> Šifra </label>
+        <input type="password" name="password" placeholder="Šifra">
+      </div>
+      <div class="field">
+        <button type="submit">Login</button>
+      </div>
+    </div>
+  }
+}
