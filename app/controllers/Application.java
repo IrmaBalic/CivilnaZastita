@@ -16,6 +16,11 @@ public class Application extends Controller {
 	static Form<Register> registerForm = form(Register.class);
 	static Form<NewObject> newObjectForm = form(NewObject.class);
 
+	public static Result adminHome() {
+        return ok(admin_home.render( 
+            Objekat.find.all()
+        )); 
+    }
     public static Result index() {
     	String user = session("email");
         return ok(
@@ -61,7 +66,7 @@ public class Application extends Controller {
 	        String password = registerForm.get().password;
 	        String phone = registerForm.get().phone;
 	        String profession = registerForm.get().profession;
-	        User.insert(name, surname, email, password, phone, profession);
+	        Korisnik.insert(name, surname, email, password, phone, profession, "User");
 	        return redirect(
 	            routes.Application.index()
 	        );
@@ -81,7 +86,7 @@ public class Application extends Controller {
     	String contentType = picture.getContentType();
     	String state="Waiting";
         // Insert
-        AffectedObject.insert(title, description, location, fileName, contentType, typeOfDisaster, state);
+        Objekat.insert(title, description, location, fileName, typeOfDisaster, state);
         return redirect(
             routes.Application.index()
         );
@@ -99,7 +104,7 @@ public class Application extends Controller {
 	    public String email;
 	    public String password;	
 		public String validate() {
-		    if (User.authenticate(email, password) == null) {
+		    if (Korisnik.authenticate(email, password) == null) {
 		      return "Invalid user or password";
 		    }
 		    return null;
