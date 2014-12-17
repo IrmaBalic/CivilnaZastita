@@ -1,14 +1,13 @@
-@(form: Form[Application.Register])
+@(user: String, role: String, form: Form[Application.Register])
 @if(form.hasGlobalErrors) {
     <p class="error">
         @form.globalError.message
     </p>
 }
 @main("Registracija") {
-  <header>
-  </header>
+<div id="frame-user">
   @helper.form(routes.Application.addUser) {
-    <div id="section_title"> Registracija
+    <div id="section_title" style="margin-top: 30px;"> Registracija
         <a href="@routes.Application.login"> Prijavi se </a>
     </div>
     <div class="input_form input_form_style">
@@ -40,4 +39,5 @@
         <button type="submit" id="submit-button">Register</button>
       </div>
   }
+</div>
 }

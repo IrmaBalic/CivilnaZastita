@@ -13,7 +13,9 @@ public class NivoHitnosti extends Model {
     public NivoHitnosti(String name) {
       this.naziv = name;
     }
-
+     public String getNaziv() {
+        return this.naziv;
+    }
     public static Finder<String,NivoHitnosti> find = new Finder<String,NivoHitnosti>(
         String.class, NivoHitnosti.class
     );

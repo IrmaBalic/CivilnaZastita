@@ -15,40 +15,62 @@ public class Application extends Controller {
 	static Form<Login> loginForm = form(Login.class);
 	static Form<Register> registerForm = form(Register.class);
 	static Form<NewObject> newObjectForm = form(NewObject.class);
+	static Form<EditObject> editObjectForm = form(EditObject.class);
 
+	// Prikaz viewa
 	public static Result adminHome() {
+		String user = session("email");
 		String role = session("role");
-        return ok(admin_home.render( 
-            Objekat.find.all(),
-            role
-        )); 
+        return ok(
+        	admin_home.render(user, role, Objekat.find.all(), StanjeObjekta.find.all(), NivoHitnosti.find.all())
+        ); 
     }
     public static Result index() {
     	String user = session("email");
+    	String role = session("role");
+    	String user_name = null;
+    	if(user != null) {
+    		user_name = Korisnik.getKorisnik(user).getIme();
+    	}
         return ok(
-        	index.render(user, newObjectForm)
+        	index.render(user, role, newObjectForm, user_name)
         	);
     }
     public static Result login() {
+    	String user = session("email");
+		String role = session("role");
         return ok(
-        	login.render(loginForm)
+        	login.render(user, role, loginForm)
         	);
     }
+    public static Result register() {
+    	String user = session("email");
+		String role = session("role");
+        return ok(
+        	register.render(user, role, registerForm)
+        	);
+    }
+    public static Result showObject(int id) {
+    	String user = session("email");
+		String role = session("role");
+    	Objekat o = Objekat.getObjekat(id);
+    	return ok(
+        	showObject.render(user,role,o,StanjeObjekta.find.all(), NivoHitnosti.find.all(),editObjectForm)
+        );
+    }
+    // Funkcionalnosti
     public static Result logout() {
     	session().clear();
 	    return redirect(
 	        routes.Application.index()
 	    );
 	}
-    public static Result register() {
-        return ok(
-        	register.render(registerForm)
-        	);
-    }
     public static Result authenticate() {
         Form<Login> loginForm = form(Login.class).bindFromRequest();
 	    if (loginForm.hasErrors()) {
-	        return badRequest(login.render(loginForm));
+	    	String user = session("email");
+			String role = session("role");
+	        return badRequest(login.render(user, role, loginForm));
 	    } else {
 	        session().clear();
 	        session("email", loginForm.get().email);
@@ -68,7 +90,9 @@ public class Application extends Controller {
     }
     public static Result addUser() {        
 	    if (registerForm.hasErrors()) {
-	        return badRequest(register.render(registerForm));
+	    	String user = session("email");
+			String role = session("role");
+	        return badRequest(register.render(user, role, registerForm));
 	    } else {
 		    Form<Register> registerForm = form(Register.class).bindFromRequest();
 	        String name = registerForm.get().name;
@@ -110,6 +134,21 @@ public class Application extends Controller {
         }
 		*/
     }
+    public static Result updateObject(int id) {
+    	String user = session("email");
+		String role = session("role");
+    	Objekat o = Objekat.getObjekat(id);
+    	Form<EditObject> editObjectForm = form(EditObject.class).bindFromRequest();
+        String state = editObjectForm.get().objectState;
+        String emergency = editObjectForm.get().emergencyLevel;
+        if(emergency.equals("In")) emergency = "In progress";
+        o.setNivoHitnosti(emergency);
+        o.setStanjeObjekta(state);
+        o.save();
+        return redirect(
+            routes.Application.adminHome()
+        );
+    }
 
     public static class Login {
 	    public String email;
@@ -134,5 +173,9 @@ public class Application extends Controller {
 	    public String description;
 	    public String location;
 	    public String typeOfDisaster;
+	}
+	public static class EditObject {
+		public String objectState;
+	    public String emergencyLevel;
 	}
 }

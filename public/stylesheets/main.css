@@ -8,7 +8,8 @@ a:hover {
   text-decoration: none !important;
 }
 header {
-  margin-top: 60px;
+  margin-top: 30px;
+  margin-bottom: 40px;
 }
 h1 {
   color: white !important;
@@ -20,15 +21,21 @@ body
   font-family: 'Open Sans', sans-serif !important;
   margin-left: auto;
   margin-right: auto;
-  background-color: #413e4a !important;
   background-color: white !important;
   text-align: center;
+}
+#frame-user {
+  background-color: #413e4a !important;
+  width: 100%;
+  min-height: 640px;
+  position: absolute;
+
 }
 #table {
   background: white;
   margin-left: auto;
   margin-right: auto;
-  width: 60%;
+  width: 90%;
 }
 .container {
   border: 1px solid black;
@@ -60,7 +67,7 @@ input {
   font-size: 22px;
   margin-left: auto;
   margin-right: auto;
-  width: 420px;
+  width: 400px;
   height: 30px;
   line-height: 30px;
 }
@@ -192,7 +199,7 @@ input[type=checkbox] {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-  margin-top: 80px;
+  margin-top: 40px;
 }
 #user-options a {
   border-width: 2px;
@@ -207,6 +214,9 @@ input[type=checkbox] {
   text-transform: uppercase;
   margin-left: 20px;
   margin-right: 20px;
+}
+#slika img {
+  height: 200px;
 }
  .controls {
     margin-top: 16px;

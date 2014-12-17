@@ -1,28 +1,28 @@
-@(form: Form[Application.Login])
+@(user: String, role: String, form: Form[Application.Login])
 @if(form.hasGlobalErrors) {
     <p class="error">
         @form.globalError.message
     </p>
 }
-@main("Prijava") {
-  <header>
-  </header>
-  @helper.form(routes.Application.authenticate) {
-    <div id="section_title"> Prijava
-        <a href="@routes.Application.register"> Registruj se </a>
-    </div>
-    <div class="input_form input_form_style">
-      <div class="field">
-        <label for="email"> Email </label>
-        <input type="email" name="email" placeholder="Email" value="@form("email").value">
+@main("Prijava", user) {
+  <div id="frame-user">
+    @helper.form(routes.Application.authenticate) {
+      <div id="section_title" style="margin-top: 80px;"> Prijava
+          <a href="@routes.Application.register"> Registruj se </a>
       </div>
-      <div class="field">
-        <label for="password"> Šifra </label>
-        <input type="password" name="password" placeholder="Šifra">
+      <div class="input_form input_form_style">
+        <div class="field">
+          <label for="email"> Email </label>
+          <input type="email" name="email" placeholder="Email" value="@form("email").value">
+        </div>
+        <div class="field">
+          <label for="password"> Šifra </label>
+          <input type="password" name="password" placeholder="Šifra">
+        </div>
+        <div class="field">
+          <button type="submit" id="submit-button">Login</button>
+        </div>
       </div>
-      <div class="field">
-        <button type="submit" id="submit-button">Login</button>
-      </div>
-    </div>
-  }
+    }
+  </div>
 }

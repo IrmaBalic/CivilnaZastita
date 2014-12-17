@@ -1,0 +1,52 @@
+@(user: String, role: String, objekat: Objekat, stanja: List[StanjeObjekta], hitnosti: List[NivoHitnosti],  form: Form[Application.EditObject])
+@main("Objekat", user, role) {
+	@helper.form(routes.Application.updateObject(objekat.getId())) {
+	 <div id="section_title" style="text-align: center; color: #566473;"> @objekat.getNaziv() </div>
+        <div id="form-frame">
+          <div class="input_form">
+            <div class="field">
+             <strong>Lokacija</strong>
+              <p> @objekat.getLokacija() </p>
+              <input id="pac-input" class="controls" type="text" name="location" placeholder="Pretraga">
+              <div id="map-canvas"></div>
+            </div>          
+          </div>
+          <div class="input_form">
+            <div class="field">
+           	  <strong>Opis</strong>
+              <p>@objekat.getOpis()</p>
+            </div>
+            <div class="field">
+           	  <strong>Tip nepogode</strong>
+              <p>@objekat.getTipNepogode()</p>
+            </div>
+            <div class="field">
+              <strong> Stanje objekta </strong>
+              <select name="objectState">
+                @for(s <- stanja) {
+                  @if(objekat.getStanjeObjekta == s.getNaziv) {
+                    <option value=@s.getNaziv() selected> @s.getNaziv() </option>
+                  } else { 
+                    <option value=@s.getNaziv()> @s.getNaziv() </option>
+                  }
+                }
+              </select>
+            </div>
+            <div class="field">
+              <strong> Nivo hitnosti </strong>
+	              <select name="emergencyLevel">
+	                @for(h <- hitnosti) {
+	                  @if(objekat.getNivoHitnosti == h.getNaziv) {
+	                    <option value=@h.getNaziv() selected> @h.getNaziv() </option>
+	                  } else { 
+	                    <option value=@h.getNaziv()> @h.getNaziv() </option>
+	                  }
+	                }
+	              </select>
+            </div>
+            <div class="field">
+              <button type="submit" id="submit-button">Ažuriraj</button>
+            </div>
+     	</div>
+    }
+}

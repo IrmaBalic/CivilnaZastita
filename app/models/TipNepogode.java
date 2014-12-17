@@ -13,7 +13,9 @@ public class TipNepogode extends Model {
     public TipNepogode(String name) {
       this.naziv = name;
     }
-
+    public String getNaziv() {
+        return this.naziv;
+    }
     public static Finder<String,TipNepogode> find = new Finder<String, TipNepogode>(
         String.class, TipNepogode.class
     );

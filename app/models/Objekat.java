@@ -36,14 +36,29 @@ public class Objekat extends Model {
     /*public static List<AffectedObject> findObjectsWithState(String objectStateName) {
        return find.fetch("state").where().eq("project.members.email", user).findList();
     }*/
+    public static Objekat getObjekat(int id) {
+        return find.where().eq("id", id).findUnique();
+    }
+    public int getId() {
+        return this.id;
+    }
     public String getNaziv() {
         return this.naziv;
+    }
+    public String getOpis() {
+        return this.opis;
     }
     public String getLokacija() {
         return this.lokacija;
     }
+    public String getTipNepogode() {
+        return this.tipNepogode.getNaziv();
+    }
     public String getStanjeObjekta() {
         return this.stanjeObjekta.getNaziv();
+    }
+    public String getNivoHitnosti() {
+        return this.nivoHitnosti.getNaziv();
     }
     public void setNivoHitnosti(String nivo) {
         this.nivoHitnosti = NivoHitnosti.find.ref(nivo);
@@ -58,6 +73,7 @@ public class Objekat extends Model {
         Objekat o = new Objekat(title, description, location, image);
         o.stanjeObjekta = StanjeObjekta.find.ref(state);
         o.tipNepogode = TipNepogode.find.ref(typeOfDisaster);
+        o.nivoHitnosti = NivoHitnosti.find.ref("Nedefinisan");
         o.save();
         SlikaObjekta.insert(image, o.id);
         /*so.objekat = Ebean.find(Objekat.class, o.id);

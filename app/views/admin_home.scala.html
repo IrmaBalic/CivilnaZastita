@@ -1,24 +1,31 @@
-@(objekti: List[Objekat], role: String)
-@main("Admin") {
+@(user: String, role: String, objekti: List[Objekat], stanja: List[StanjeObjekta], hitnosti: List[NivoHitnosti])
+@main("Admin", user, role) {
 <div class="table-responsive" id="table">
   <table class="table table-striped table-bordered table-hover table-condensed" style="margin-top: 20px;">
     <thead>
       <tr>
         <th>Objekat</th>
+        <th>Opis</th>
         <th>Lokacija</th>
+        <th>Tip nepogode</th>
         <th>Stanje objekta</th>
+        <th>Nivo hitnosti</th>
+        <th>Akcija</th>
       </tr>
     </thead>
     <tbody>
         @for(o <- objekti) {
 	        <tr>
-	        	<td>@o.getNaziv()</td>
-	        	<td>@o.getLokacija()</td>
+	        	<td width="5%">@o.getNaziv()</td>
+            <td width="40%">@o.getOpis()</td>
+	        	<td width="20%">@o.getLokacija()</td>
+            <td width="10%">@o.getTipNepogode()</td>
 	        	<td>@o.getStanjeObjekta()</td>
+            <td>@o.getNivoHitnosti()</td>
+            <td><a href="@routes.Application.showObject(o.getId())">Ažuriraj</a></td>
 	        </tr>
         }
     </tbody>
   </table>
-  @role
 </div>
 }
