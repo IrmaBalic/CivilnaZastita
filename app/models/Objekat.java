@@ -5,6 +5,8 @@ import play.db.ebean.*;
 import com.avaje.ebean.*;
 import com.avaje.ebean.Ebean;  
 import com.avaje.ebean.config.GlobalProperties;  
+import java.util.List;
+
 
 @Entity
 public class Objekat extends Model {
@@ -24,7 +26,7 @@ public class Objekat extends Model {
     public NivoHitnosti nivoHitnosti;
     @ManyToOne
     public Podrucje podrucje;
-    public Objekat(String title, String description, String location, String image) {
+    public Objekat(String title, String description, String location) {
       this.naziv = title;
       this.opis = description;
       this.lokacija = location;
@@ -60,6 +62,10 @@ public class Objekat extends Model {
     public String getNivoHitnosti() {
         return this.nivoHitnosti.getNaziv();
     }
+    public List<SlikaObjekta> getSlikeObjekta() {
+        List<SlikaObjekta> slike = SlikaObjekta.getSlikeObjekta(this.id);
+        return slike;
+    }
     public void setNivoHitnosti(String nivo) {
         this.nivoHitnosti = NivoHitnosti.find.ref(nivo);
     }
@@ -69,14 +75,15 @@ public class Objekat extends Model {
     public void setPodrucje(String podrucje) {
         this.podrucje = Podrucje.find.ref(podrucje);
     }
-    public static void insert(String title, String description, String location, String image, String typeOfDisaster, String state) {
-        Objekat o = new Objekat(title, description, location, image);
+    public static int insert(String title, String description, String location, String typeOfDisaster, String state) {
+        Objekat o = new Objekat(title, description, location);
         o.stanjeObjekta = StanjeObjekta.find.ref(state);
         o.tipNepogode = TipNepogode.find.ref(typeOfDisaster);
         o.nivoHitnosti = NivoHitnosti.find.ref("Nedefinisan");
         o.save();
-        SlikaObjekta.insert(image, o.id);
+        /*SlikaObjekta.insert(image, o.id);*/
         /*so.objekat = Ebean.find(Objekat.class, o.id);
         so.save();*/
+        return o.id;
     }
 }

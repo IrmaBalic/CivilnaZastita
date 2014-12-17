@@ -10,6 +10,10 @@ import play.data.*;
 import static play.data.Form.*;
 import play.mvc.Http.*;
 import play.mvc.Http.MultipartFormData.*;
+import java.lang.Object;
+import java.io.File;
+import java.util.List;
+
 
 public class Application extends Controller {
 	static Form<Login> loginForm = form(Login.class);
@@ -55,7 +59,7 @@ public class Application extends Controller {
 		String role = session("role");
     	Objekat o = Objekat.getObjekat(id);
     	return ok(
-        	showObject.render(user,role,o,StanjeObjekta.find.all(), NivoHitnosti.find.all(),editObjectForm)
+        	showObject.render(user,role,o,StanjeObjekta.find.all(), NivoHitnosti.find.all(),editObjectForm,o.getSlikeObjekta())
         );
     }
     // Funkcionalnosti
@@ -113,26 +117,21 @@ public class Application extends Controller {
         String description = newObjectForm.get().description;
         String location = newObjectForm.get().location;
         String typeOfDisaster = newObjectForm.get().typeOfDisaster;
+        String state="Waiting";
+        int objekatId = Objekat.insert(title, description, location, typeOfDisaster, state);
         // Images
-       /* UploadResource resource = newObjectForm.get();*/
         MultipartFormData body = request().body().asMultipartFormData();
-        FilePart picture = body.getFile("image");
-        String fileName = picture.getFilename();
-    	String contentType = picture.getContentType();
-    	String state="Waiting";
-        // Insert
-        Objekat.insert(title, description, location, fileName, typeOfDisaster, state);
+        String myUploadPath = "C:/Users/irma/Desktop/civilna-zastita/public/images/";
+        List<FilePart> files = body.getFiles();
+        for(FilePart picture: files){
+        	File file = picture.getFile();
+        	String fileName = picture.getFilename();
+        	file.renameTo(new File(myUploadPath, fileName));
+        	SlikaObjekta.insert(fileName,objekatId);
+        }
         return redirect(
             routes.Application.index()
         );
-        /* Multiple files
-        multiple = "multiple"
-        List<FilePart>file;
-        file=md.getFiles();
-        for(FilePart p: file){
-        Logger.info(p.getFilename());
-        }
-		*/
     }
     public static Result updateObject(int id) {
     	String user = session("email");

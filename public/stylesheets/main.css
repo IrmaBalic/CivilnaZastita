@@ -217,6 +217,7 @@ input[type=checkbox] {
 }
 #slika img {
   height: 200px;
+  display:inline-block;
 }
  .controls {
     margin-top: 16px;

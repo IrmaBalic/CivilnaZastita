@@ -3,6 +3,8 @@ package models;
 import javax.persistence.*;
 import play.db.ebean.*;
 import com.avaje.ebean.*;
+import java.util.List;
+
 
 @Entity
 public class SlikaObjekta extends Model {
@@ -17,7 +19,12 @@ public class SlikaObjekta extends Model {
     public SlikaObjekta(String name) {
       this.naziv = name;
     }
-
+    public String getNaziv() {
+        return this.naziv;
+    }
+    public static List<SlikaObjekta> getSlikeObjekta(int id) {
+      return find.where().eq("id", id).findList();
+    }
     public static Finder<String,SlikaObjekta> find = new Finder<String,SlikaObjekta>(
         String.class, SlikaObjekta.class
     );
