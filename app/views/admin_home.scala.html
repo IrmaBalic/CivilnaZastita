@@ -1,6 +1,24 @@
-@(objects: List[Objekat])
+@(objekti: List[Objekat], role: String)
 @main("Admin") {
-<div class="table-responsive">
-  
+<div class="table-responsive" id="table">
+  <table class="table table-striped table-bordered table-hover table-condensed" style="margin-top: 20px;">
+    <thead>
+      <tr>
+        <th>Objekat</th>
+        <th>Lokacija</th>
+        <th>Stanje objekta</th>
+      </tr>
+    </thead>
+    <tbody>
+        @for(o <- objekti) {
+	        <tr>
+	        	<td>@o.getNaziv()</td>
+	        	<td>@o.getLokacija()</td>
+	        	<td>@o.getStanjeObjekta()</td>
+	        </tr>
+        }
+    </tbody>
+  </table>
+  @role
 </div>
 }

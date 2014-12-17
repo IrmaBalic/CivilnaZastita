@@ -36,6 +36,15 @@ public class Objekat extends Model {
     /*public static List<AffectedObject> findObjectsWithState(String objectStateName) {
        return find.fetch("state").where().eq("project.members.email", user).findList();
     }*/
+    public String getNaziv() {
+        return this.naziv;
+    }
+    public String getLokacija() {
+        return this.lokacija;
+    }
+    public String getStanjeObjekta() {
+        return this.stanjeObjekta.getNaziv();
+    }
     public void setNivoHitnosti(String nivo) {
         this.nivoHitnosti = NivoHitnosti.find.ref(nivo);
     }

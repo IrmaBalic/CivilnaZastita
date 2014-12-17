@@ -13,7 +13,9 @@ public class StanjeObjekta extends Model {
     public StanjeObjekta(String name) {
       this.naziv = name;
     }
-
+    public String getNaziv() {
+        return this.naziv;
+    }
     public static Finder<String,StanjeObjekta> find = new Finder<String,StanjeObjekta>(
         String.class, StanjeObjekta.class
     );

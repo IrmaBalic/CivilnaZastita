@@ -17,8 +17,10 @@ public class Application extends Controller {
 	static Form<NewObject> newObjectForm = form(NewObject.class);
 
 	public static Result adminHome() {
+		String role = session("role");
         return ok(admin_home.render( 
-            Objekat.find.all()
+            Objekat.find.all(),
+            role
         )); 
     }
     public static Result index() {
@@ -50,9 +52,18 @@ public class Application extends Controller {
 	    } else {
 	        session().clear();
 	        session("email", loginForm.get().email);
-	        return redirect(
-	            routes.Application.index()
-	        );
+	        String role = Korisnik.getPrivilegija(loginForm.get().email);
+	        session("role", role);
+	        if(role.equals("User")) {
+		        return redirect(
+		            routes.Application.index()
+		        );
+	    	}
+	    	else {
+	    		return redirect(
+		            routes.Application.adminHome()
+		        );
+	    	}
 	    }
     }
     public static Result addUser() {        

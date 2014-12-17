@@ -1,57 +1,56 @@
 @(user: String, form: Form[Application.NewObject])
-@main("Home") {
-
+@main("Home", user) {
 	@if(user != null) {
     <div id="welcome-user"> 
         Zdravo, @user &nbsp&nbsp
         <a href="@routes.Application.logout"> Odjava </a>
     </div>
 	}
-    @if(user == null) {
-        <div id="user-options">
-            <header>
-                <h1> Civilna zaštita </h1>
-            </header>
-            <a href="@routes.Application.register"> Registracija </a>
-            <a href="@routes.Application.login"> Prijava </a>
-        </div>
-    }
-    @if(user != null) {
-        @helper.form(routes.Application.addObject, 'enctype -> "multipart/form-data") {
-        <div id="section_title" style="text-align: center;"> Novi objekat </div>
-        <div id="form-frame">
-          <div class="input_form">
-            <div class="field">
-              <label for="location"> Lokacija </label>
-              <input id="pac-input" class="controls" type="text" name="location" placeholder="Pretraga">
-              <div id="map-canvas"></div>
-            </div>          
-          </div>
-          <div class="input_form">
-            <div class="field">
-              <label for="title"> Naziv </label>
-              <input type="text" name="title" placeholder="Npr. zgrada, kuća.. ">
-            </div>
-            <div class="field">
-              <label for="description"> Opis </label>
-              <textarea name="description"cols="30" rows="7" placeholder="Opis objekta"></textarea>
-            </div>
-            <div class="field">
-              <label for="typeOfDisaster"> Tip nepogode </label>
-              <select name="typeOfDisaster">
-                <option value="Zemljotres">Zemljotres</option>
-                <option value="Poplava">Poplava</option>
-                <option value="Pozar">Požar</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="images"> Slike </label>
-              <input type="file" id="images" name="image">
-            </div>
-            <div class="field">
-              <button type="submit">Dodaj</button>
-            </div>
-          </div>
-    }
+  @if(user == null) {
+      <div id="user-options">
+          <header>
+              <h1> Civilna zaštita </h1>
+          </header>
+          <a href="@routes.Application.register"> Registracija </a>
+          <a href="@routes.Application.login"> Prijava </a>
+      </div>
   }
+  @if(user != null) {
+      @helper.form(routes.Application.addObject, 'enctype -> "multipart/form-data") {
+      <div id="section_title" style="text-align: center;"> Novi objekat </div>
+      <div id="form-frame">
+        <div class="input_form">
+          <div class="field">
+            <label for="location"> Lokacija </label>
+            <input id="pac-input" class="controls" type="text" name="location" placeholder="Pretraga">
+            <div id="map-canvas"></div>
+          </div>          
+        </div>
+        <div class="input_form">
+          <div class="field">
+            <label for="title"> Naziv </label>
+            <input type="text" name="title" placeholder="Npr. zgrada, kuća.. ">
+          </div>
+          <div class="field">
+            <label for="description"> Opis </label>
+            <textarea name="description"cols="30" rows="7" placeholder="Opis objekta"></textarea>
+          </div>
+          <div class="field">
+            <label for="typeOfDisaster"> Tip nepogode </label>
+            <select name="typeOfDisaster">
+              <option value="Zemljotres">Zemljotres</option>
+              <option value="Poplava">Poplava</option>
+              <option value="Pozar">Požar</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="images"> Slike </label>
+            <input type="file" id="images" name="image">
+          </div>
+          <div class="field">
+            <button type="submit" id="submit-button">Dodaj</button>
+          </div>
+        </div>
+  }
+}
 }

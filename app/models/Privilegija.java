@@ -13,7 +13,9 @@ public class Privilegija extends Model {
     public Privilegija(String name) {
       this.naziv = name;
     }
-
+    public String getNaziv() {
+        return this.naziv;
+    }
     public static Finder<String,Privilegija> find = new Finder<String,Privilegija>(
         String.class, Privilegija.class
     );

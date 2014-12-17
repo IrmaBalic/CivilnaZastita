@@ -29,9 +29,15 @@ public class Korisnik extends Model {
     public static Finder<String,Korisnik> find = new Finder<String,Korisnik>(
         String.class, Korisnik.class
     );
+    public String getPrivilegija() {
+        return this.privilegija.getNaziv();
+    }
     public static Korisnik authenticate(String email, String password) {
         return find.where().eq("email", email)
             .eq("sifra", password).findUnique();
+    }
+    public static String getPrivilegija(String email) {
+        return find.where().eq("email", email).findUnique().getPrivilegija();
     }
     public static void insert(String name, String surname, String email, String password, String phone, 
       String profession, String role) {
