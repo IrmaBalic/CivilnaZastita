@@ -21,3 +21,6 @@ POST    /object                      controllers.Application.addObject()
 POST    /object/:id                      controllers.Application.updateObject(id: Integer)
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+#Objects
+GET /objects						controllers.Application.objects()

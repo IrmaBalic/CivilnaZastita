@@ -148,6 +148,15 @@ public class Application extends Controller {
             routes.Application.adminHome()
         );
     }
+	
+	public static Result objects() {
+		List<Objekat> objekti = Objekat.searchAll();
+		String user = session("email");
+        return ok(
+        	objects.render(user, objekti)
+        );
+    }
+	
 
     public static class Login {
 	    public String email;

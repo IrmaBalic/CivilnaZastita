@@ -6,6 +6,7 @@ import com.avaje.ebean.*;
 import com.avaje.ebean.Ebean;  
 import com.avaje.ebean.config.GlobalProperties;  
 import java.util.List;
+import java.util.*;
 
 
 @Entity
@@ -86,4 +87,13 @@ public class Objekat extends Model {
         so.save();*/
         return o.id;
     }
+	public static List<Objekat> searchAll(){
+		List<Objekat> objekti= find.findList();
+		List<String> locations=new ArrayList<String>();
+		for (int i=0; i<objekti.size(); i++){
+			String[] ob = objekti.get(i).lokacija.split(",", 2);
+				locations.add(ob[0]);
+		};
+		return objekti;
+	} 
 }
