@@ -1,0 +1,97 @@
+@(user: String, objekti: List[Objekat])
+@map("Objects", objekti) {
+
+	@if(user != null) {
+    <div id="welcome-user"> 
+        Zdravo, @user &nbsp&nbsp
+        <a href="@routes.Application.logout"> Odjava </a>
+    </div>
+	}
+    @if(user == null) {
+        <div id="user-options">
+            <header>
+                <h1> Civilna zaštita </h1>
+            </header>
+            <a href="@routes.Application.register"> Registracija </a>
+            <a href="@routes.Application.login"> Prijava </a>
+        </div>
+    }
+    @if(user != null) {
+        @helper.form(routes.Application.objects) {
+        <div id="section_title" style="text-align: center;"> Pregled objekata 
+		</div>
+        <div id="form-frame">
+          <div class="objects_form">
+            <div class="field">
+              <div id="map-canvas" style="width: 600px; height: 450px"></div>
+            </div>  
+			<div class="field">
+			  
+				<script type="text/javascript">
+				var geocoder;
+				var map;
+				var lokacije=[];
+				var trenutna=0;
+				var marker;
+				var infowindow = new google.maps.InfoWindow();
+				
+				function initialize() {
+				geocoder=new google.maps.Geocoder();
+				var mapOptions = {
+					center: { lat: 43.9165389, lng: 17.6721508},
+					zoom: 7
+				};
+				map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+				@for(obj <- objekti){
+					geocoder.geocode({address:"@obj.lokacija".split(",", 2)[0]}, function(results, status){
+						 if (status == google.maps.GeocoderStatus.OK ) {
+							marker = new google.maps.Marker({
+							position: results[0].geometry.location,
+							map: map
+							});
+							
+							google.maps.event.addListener(marker, 'click', (function(marker, i) {
+								return function() {
+									map.setZoom(9);
+									map.setCenter(marker.getPosition());
+									var content = '<div id="content">'+
+									  '<div id="siteNotice">'+
+									  '</div>'+
+									  '<h4 id="firstHeading" class="firstHeading">@obj.lokacija</h4>'+
+									  '<div id="bodyContent">'+
+									  '<p><b>@obj.naziv</b> unistena prilikom <b>@obj.tipNepogode.naziv</b>a </p>'+
+									  '</div>'+
+									  '</div>';
+									infowindow.setContent(content);
+									infowindow.open(map, marker);
+								}
+							})(marker, i));
+						}
+					});
+				}
+				var infowindow = new google.maps.InfoWindow();
+				var marker;
+				for (var i = 0; i <lokacije.length; i++) {  
+					marker = new google.maps.Marker({
+						position: lokacije[0],
+						map: map
+					});
+
+					google.maps.event.addListener(marker, 'click', (function(marker, i) {
+						return function() {
+							infowindow.setContent("amra");
+							infowindow.open(map, marker);
+						}
+					})(marker, i));
+				}
+			}
+            google.maps.event.addDomListener(window, 'load', initialize);
+			
+				</script>
+			  
+            </div>			
+          </div> 
+        </div>
+    }
+  }
+}
