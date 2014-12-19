@@ -150,10 +150,11 @@ public class Application extends Controller {
     }
 	
 	public static Result objects() {
-		List<Objekat> objekti = Objekat.searchAll();
 		String user = session("email");
+		String role = session("role");
+		List<Objekat> objekti = Objekat.searchAll();
         return ok(
-        	objects.render(user, objekti)
+        	objects.render(user, role, objekti)
         );
     }
 	

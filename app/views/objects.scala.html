@@ -1,24 +1,10 @@
-@(user: String, objekti: List[Objekat])
+@(user: String, role: String, objekti: List[Objekat])
+@main("Admin", user, role) {
 @map("Objects", objekti) {
 
-	@if(user != null) {
-    <div id="welcome-user"> 
-        Zdravo, @user &nbsp&nbsp
-        <a href="@routes.Application.logout"> Odjava </a>
-    </div>
-	}
-    @if(user == null) {
-        <div id="user-options">
-            <header>
-                <h1> Civilna zaštita </h1>
-            </header>
-            <a href="@routes.Application.register"> Registracija </a>
-            <a href="@routes.Application.login"> Prijava </a>
-        </div>
-    }
     @if(user != null) {
         @helper.form(routes.Application.objects) {
-        <div id="section_title" style="text-align: center;"> Pregled objekata 
+        <div id="section_title" style="text-align: center;color: #566473;"> Pregled objekata 
 		</div>
         <div id="form-frame">
           <div class="objects_form">
@@ -94,4 +80,5 @@
         </div>
     }
   }
+}
 }
