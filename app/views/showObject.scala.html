@@ -9,6 +9,69 @@
               <p> @objekat.getLokacija() </p>
               <input id="pac-input" class="controls" type="text" name="location" placeholder="Pretraga">
               <div id="map-canvas"></div>
+			  <div class="field">
+					<script type="text/javascript">
+					var geocoder;
+					var map;
+					var lokacije=[];
+					var trenutna=0;
+					var marker;
+					var infowindow = new google.maps.InfoWindow();
+					
+					function initialize() {
+					geocoder=new google.maps.Geocoder();
+					var mapOptions = {
+						center: { lat: 43.9165389, lng: 17.6721508},
+						zoom: 7
+					};
+					map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+					
+						geocoder.geocode({address:"@objekat.lokacija".split(",", 2)[0]}, function(results, status){
+							 if (status == google.maps.GeocoderStatus.OK ) {
+								marker = new google.maps.Marker({
+								position: results[0].geometry.location,
+								map: map
+								});
+								
+								google.maps.event.addListener(marker, 'click', (function(marker, i) {
+									return function() {
+										map.setZoom(9);
+										map.setCenter(marker.getPosition());
+										var content = '<div id="content">'+
+										  '<div id="siteNotice">'+
+										  '</div>'+
+										  '<h4 id="firstHeading" class="firstHeading">@objekat.lokacija</h4>'+
+										  '<div id="bodyContent">'+
+										  '<p><b>@objekat.naziv</b> unistena prilikom <b>@objekat.tipNepogode.naziv</b>a </p>'+
+										  '</div>'+
+										  '</div>';
+										infowindow.setContent(content);
+										infowindow.open(map, marker);
+									}
+								})(marker, i));
+							}
+						});
+					
+					var infowindow = new google.maps.InfoWindow();
+					var marker;
+					for (var i = 0; i <lokacije.length; i++) {  
+						marker = new google.maps.Marker({
+							position: lokacije[0],
+							map: map
+						});
+
+						google.maps.event.addListener(marker, 'click', (function(marker, i) {
+							return function() {
+								infowindow.setContent("amra");
+								infowindow.open(map, marker);
+							}
+						})(marker, i));
+					}
+				}
+				google.maps.event.addDomListener(window, 'load', initialize);
+				
+					</script>
+			  </div>
             </div>          
           </div>
           <div class="input_form">
