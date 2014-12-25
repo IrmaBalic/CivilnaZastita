@@ -108,10 +108,10 @@
 	              </select>
             </div>
             <div class="field">
-                <strong> Slike </strong>
+                <strong> Slike @slike.length </strong>
                 <div id="images">
                   @for(s <- slike) {
-                    <a href="/assets/images/@s.getNaziv()"><img src="/assets/images/@s.getNaziv()" style="height: 50px;"></a>
+                    <a href="/assets/images/@s.getNaziv()"><img src="/assets/images/@s.getNaziv()" style="height: 150px;"></a>
                   }
                 </div>
             </div>

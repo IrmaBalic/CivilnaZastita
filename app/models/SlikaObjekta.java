@@ -23,7 +23,7 @@ public class SlikaObjekta extends Model {
         return this.naziv;
     }
     public static List<SlikaObjekta> getSlikeObjekta(int id) {
-      return find.where().eq("id", id).findList();
+      return find.where().eq("objekat_id", id).findList();
     }
     public static Finder<String,SlikaObjekta> find = new Finder<String,SlikaObjekta>(
         String.class, SlikaObjekta.class
