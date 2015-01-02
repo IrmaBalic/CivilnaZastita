@@ -11,7 +11,6 @@ GET     /login                  controllers.Application.login()
 POST    /login                      controllers.Application.authenticate()
 #Logut
 GET    /logout                      controllers.Application.logout()
-
 #Register
 GET     /register                  controllers.Application.register()
 POST    /register                      controllers.Application.addUser()
@@ -19,6 +18,8 @@ POST    /register                      controllers.Application.addUser()
 GET   /object/:id          			controllers.Application.showObject(id: Integer)  
 POST    /object                      controllers.Application.addObject()
 POST    /object/:id                      controllers.Application.updateObject(id: Integer)
+#Report
+GET    /download					controllers.Application.download()
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 

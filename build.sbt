@@ -11,7 +11,8 @@ libraryDependencies ++= Seq(
   javaEbean,
   cache,
   javaWs,
-  "mysql" % "mysql-connector-java" % "5.1.18"
+  "mysql" % "mysql-connector-java" % "5.1.18",
+  "com.itextpdf" % "itextpdf" % "5.0.6"
   )
 
 includeFilter in (Assets, LessKeys.less) := "*.less"

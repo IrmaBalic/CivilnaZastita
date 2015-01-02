@@ -10,6 +10,7 @@
         <th>Tip nepogode</th>
         <th>Stanje objekta</th>
         <th>Nivo hitnosti</th>
+        <th>Izvještaj</th>
         <th>Akcija</th>
       </tr>
     </thead>
@@ -22,6 +23,7 @@
             <td width="10%">@o.getTipNepogode()</td>
 	        	<td>@o.getStanjeObjekta()</td>
             <td>@o.getNivoHitnosti()</td>
+            <td><a href="@routes.Application.download" style="cursor:pointer;">Download</a></td>
             <td><a href="@routes.Application.showObject(o.getId())">Ažuriraj</a></td>
 	        </tr>
         }

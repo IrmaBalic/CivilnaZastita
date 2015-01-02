@@ -13,7 +13,12 @@ import play.mvc.Http.MultipartFormData.*;
 import java.lang.Object;
 import java.io.File;
 import java.util.List;
-
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.Date;
 
 public class Application extends Controller {
 	static Form<Login> loginForm = form(Login.class);
@@ -63,6 +68,24 @@ public class Application extends Controller {
         );
     }
     // Funkcionalnosti
+    public static Result download() {
+    	//Download izvjestaja
+    	try {
+	    	OutputStream file = new FileOutputStream(new File("D:\\Izvjestaj.pdf"));
+	        Document document = new Document();
+	        PdfWriter.getInstance(document, file);
+	        document.open();
+	        document.add(new Paragraph("Hello World, iText"));
+	        document.add(new Paragraph(new Date().toString()));
+	        document.close();
+	        file.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+	    return redirect(
+	        routes.Application.adminHome()
+	    );
+	}
     public static Result logout() {
     	session().clear();
 	    return redirect(
