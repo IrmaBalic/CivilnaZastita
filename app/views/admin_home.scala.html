@@ -3,7 +3,7 @@
 <div class="table-responsive" id="table">
   <table class="table table-striped table-bordered table-hover table-condensed" style="margin-top: 20px;">
     <thead>
-      <tr>
+      <tr style="text-align:center;">
         <th>Objekat</th>
         <th>Opis</th>
         <th>Lokacija</th>
@@ -17,14 +17,18 @@
     <tbody>
         @for(o <- objekti) {
 	        <tr>
-	        	<td width="5%">@o.getNaziv()</td>
-            <td width="40%">@o.getOpis()</td>
+	        	<td width="10%">@o.getNaziv()</td>
+                <td width="30%">@o.getOpis()</td>
 	        	<td width="20%">@o.getLokacija()</td>
-            <td width="10%">@o.getTipNepogode()</td>
-	        	<td>@o.getStanjeObjekta()</td>
-            <td>@o.getNivoHitnosti()</td>
-            <td><a href="@routes.Application.download" style="cursor:pointer;">Download</a></td>
-            <td><a href="@routes.Application.showObject(o.getId())">Ažuriraj</a></td>
+                <td width="10%">@o.getTipNepogode()</td>
+	        	<td width="10%">@o.getStanjeObjekta()</td>
+                <td width="10%">@o.getNivoHitnosti()</td>
+            @if(o.getIzvjestaj() != null) {
+                <td width="10%"><a href="@routes.Application.download(o.getId())" style="cursor:pointer;">Download</a></td>
+            } else { 
+                <td width="10%"><a href="@routes.Application.showObjectReport(o.getId())" style="cursor:pointer;">Dodaj izvještaj</a></td>
+            }
+                <td><a href="@routes.Application.showObject(o.getId())">Ažuriraj</a></td>
 	        </tr>
         }
     </tbody>

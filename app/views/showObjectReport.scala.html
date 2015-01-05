@@ -1,0 +1,17 @@
+@(user: String, role: String, objekat: Objekat)
+@main("Izvještaj", user, role) {
+	@helper.form(routes.Application.addReport(objekat.getId())) {
+	    <div id="section_title" style="text-align: center; color: #566473;"> @objekat.getNaziv() </div>
+		<div id="form-frame">
+          <div class="input_form" style="width: 700px;">
+            <div class="field">
+              <label for="report"> Izvještaj </label>
+              <textarea name="report" rows="15" style="margin-top:10px;"></textarea>
+            </div>
+            <div class="field">
+              <button type="submit" id="submit-button">Dodaj</button>
+            </div>
+          </div>
+		</div>
+	}
+}

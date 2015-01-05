@@ -16,15 +16,23 @@ import java.util.List;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.Font;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Date;
+import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import com.itextpdf.text.Element;
 
 public class Application extends Controller {
 	static Form<Login> loginForm = form(Login.class);
 	static Form<Register> registerForm = form(Register.class);
 	static Form<NewObject> newObjectForm = form(NewObject.class);
 	static Form<EditObject> editObjectForm = form(EditObject.class);
+    private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 20, Font.BOLD);
+    private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 15, Font.BOLD);
+    private static Font contentFont = new Font(Font.FontFamily.TIMES_ROMAN, 14);
+    private static Font dateFont = new Font(Font.FontFamily.TIMES_ROMAN, 12);
 
 	// Prikaz viewa
 	public static Result adminHome() {
@@ -59,6 +67,14 @@ public class Application extends Controller {
         	register.render(user, role, registerForm)
         	);
     }
+    public static Result showObjectReport(int id) {
+    	String user = session("email");
+		String role = session("role");
+    	Objekat o = Objekat.getObjekat(id);
+    	return ok(
+        	showObjectReport.render(user,role,o)
+        );
+    }
     public static Result showObject(int id) {
     	String user = session("email");
 		String role = session("role");
@@ -68,16 +84,12 @@ public class Application extends Controller {
         );
     }
     // Funkcionalnosti
-    public static Result download() {
-    	//Download izvjestaja
+    public static Result download(int id) {
+    	Objekat o = Objekat.getObjekat(id);
+    	byte[] izvjestaj = o.getIzvjestaj();
     	try {
-	    	OutputStream file = new FileOutputStream(new File("D:\\Izvjestaj.pdf"));
-	        Document document = new Document();
-	        PdfWriter.getInstance(document, file);
-	        document.open();
-	        document.add(new Paragraph("Hello World, iText"));
-	        document.add(new Paragraph(new Date().toString()));
-	        document.close();
+	    	OutputStream file = new FileOutputStream(new File("D:\\Izvjestaj_Objekat_"+id+".pdf"));
+	        file.write(izvjestaj);
 	        file.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -157,8 +169,6 @@ public class Application extends Controller {
         );
     }
     public static Result updateObject(int id) {
-    	String user = session("email");
-		String role = session("role");
     	Objekat o = Objekat.getObjekat(id);
     	Form<EditObject> editObjectForm = form(EditObject.class).bindFromRequest();
         String state = editObjectForm.get().objectState;
@@ -171,7 +181,60 @@ public class Application extends Controller {
             routes.Application.adminHome()
         );
     }
-	
+    public static Result deleteObject(int id) {
+    	Objekat o = Objekat.getObjekat(id);
+    	o.delete();
+    	return ok("Delete");
+    	/*return redirect(
+	        routes.Application.adminHome()
+	    );*/
+    }
+	 public static Result addReport(int id) {
+		Objekat o = Objekat.getObjekat(id);
+		Form<NewReport> newReportForm = form(NewReport.class).bindFromRequest();
+        String report = newReportForm.get().report;
+        String title = o.getNaziv();
+        try {
+	    	ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+	        Document document = new Document();
+	        PdfWriter.getInstance(document, byteArrayOutputStream);
+	        document.open();
+	        //createPDF(document); 
+	        Paragraph content = new Paragraph();
+	        //Title
+	        addEmptyLine(content, 1);
+	       	Paragraph pTitle = new Paragraph("Izvještaj", catFont);
+	       	pTitle.setAlignment(Element.ALIGN_CENTER);
+	       	content.add(pTitle);
+   			addEmptyLine(content, 2);
+   			//Object
+   			content.add(new Paragraph("Objekat: "+title, subFont));
+   			addEmptyLine(content, 1);
+   			//Report content
+	        content.add(new Paragraph(report, contentFont));
+	        addEmptyLine(content, 3);
+	        //Date
+	        String formattedDate = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date());
+	        content.add(new Paragraph("Izvještaj kreiran:  " + formattedDate, dateFont));
+
+	        document.add(content);
+	        document.close();
+	        byte[] pdfBytes = byteArrayOutputStream.toByteArray();
+	        o.setIzvjestaj(pdfBytes);
+	        o.save();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+		return redirect(
+            routes.Application.adminHome()
+        );
+	 }
+	private static void addEmptyLine(Paragraph paragraph, int number) {
+	    for (int i = 0; i < number; i++) {
+	      paragraph.add(new Paragraph(" "));
+	    }
+  	}
 	public static Result objects() {
 		String user = session("email");
 		String role = session("role");
@@ -209,5 +272,8 @@ public class Application extends Controller {
 	public static class EditObject {
 		public String objectState;
 	    public String emergencyLevel;
+	}
+	public static class NewReport {
+		public String report;
 	}
 }

@@ -18,10 +18,12 @@ POST    /register                      controllers.Application.addUser()
 GET   /object/:id          			controllers.Application.showObject(id: Integer)  
 POST    /object                      controllers.Application.addObject()
 POST    /object/:id                      controllers.Application.updateObject(id: Integer)
+DELETE  /object_delete/:id          		controllers.Application.deleteObject(id: Integer)
 #Report
-GET    /download					controllers.Application.download()
-# Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
-
+GET    /download/:id					controllers.Application.download(id: Integer)
+GET   /report/:id          			    controllers.Application.showObjectReport(id: Integer)  
+POST    /report/:id                      controllers.Application.addReport(id: Integer)
 #Objects
 GET /objects						controllers.Application.objects()
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)

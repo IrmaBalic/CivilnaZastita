@@ -67,6 +67,9 @@ public class Objekat extends Model {
         List<SlikaObjekta> slike = SlikaObjekta.getSlikeObjekta(this.id);
         return slike;
     }
+    public byte[] getIzvjestaj() {
+        return this.izvjestaj;
+    }
     public void setNivoHitnosti(String nivo) {
         this.nivoHitnosti = NivoHitnosti.find.ref(nivo);
     }
@@ -75,6 +78,9 @@ public class Objekat extends Model {
     }
     public void setPodrucje(String podrucje) {
         this.podrucje = Podrucje.find.ref(podrucje);
+    }
+    public void setIzvjestaj(byte[] byteArray) {
+        this.izvjestaj = byteArray;
     }
     public static int insert(String title, String description, String location, String typeOfDisaster, String state) {
         Objekat o = new Objekat(title, description, location);
@@ -96,4 +102,7 @@ public class Objekat extends Model {
 		};
 		return objekti;
 	} 
+    public static List<Objekat> findByEmergency(String emergency) {
+        return find.where().eq("nivo_hitnosti_naziv", emergency).findList();
+    } 
 }
